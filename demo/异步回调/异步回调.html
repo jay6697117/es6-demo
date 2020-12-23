@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>异步回调</title>
+  </head>
+  <body>
+    <script>
+      function loadScript(sciptPath, callback) {
+        let scriptDom = document.createElement('script');
+        scriptDom.src = sciptPath;
+
+        scriptDom.onload = () => {
+          callback(null, scriptDom);
+        };
+
+        scriptDom.onerror = () => {
+          callback(new Error('# sciptPath: ' + sciptPath + ' #'), scriptDom);
+        };
+
+        document.head.append(scriptDom);
+      }
+      console.log('222222......');
+      console.log('-------------------------------');
+
+      //1.0: 回调地狱或厄运金字塔
+      // loadScript('./script1.js', (error, script) => {
+      //   if (error) {
+      //     console.log('error1 :>> ', error);
+      //     console.log('script1 :>> ', script);
+      //   } else {
+      //     hello1();
+      //     loadScript('./script2.js', (error, script) => {
+      //       if (error) {
+      //         console.log('error2 :>> ', error);
+      //         console.log('script2 :>> ', script);
+      //       } else {
+      //         hello2();
+      //         loadScript('./script3.js', (error, script) => {
+      //           if (error) {
+      //             console.log('error3 :>> ', error);
+      //             console.log('script3 :>> ', script);
+      //           } else {
+      //             hello3();
+      //           }
+      //         });
+      //       }
+      //     });
+      //   }
+      // });
+
+
+      //2.0: 独立顶层函数避免深层嵌套
+      loadScript('./script1.js', callback1);
+
+      function callback1(error, script) {
+        if (error) {
+          console.log('error :>> ', error);
+          console.log('script :>> ', script);
+        } else {
+          hello();
+          loadScript('./script2.js', callback2);
+        }
+      }
+
+      function callback2(error, script) {
+        if (error) {
+          console.log('error :>> ', error);
+          console.log('script :>> ', script);
+        } else {
+          hello();
+          loadScript('./script3.js', callback3);
+        }
+      }
+
+      function callback3(error, script) {
+        if (error) {
+          console.log('error :>> ', error);
+          console.log('script :>> ', script);
+        } else {
+          hello();
+          // ...加载完所有脚本后继续 (*)
+        }
+      }
+
+      // loadScript('./script2.js', script => {
+      //   hello2();
+      // });
+
+      // loadScript('https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.2.0/lodash.js', script => {
+      //   console.log('script.src :>> ', script.src);
+      //   console.log('_ :>> ', _);
+      // });
+    </script>
+  </body>
+</html>

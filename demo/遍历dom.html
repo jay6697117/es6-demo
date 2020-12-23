@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div>
+      <div class="name">111</div>
+      <div class="name">222</div>
+      <div class="name">333</div>
+      <div class="name">444</div>
+    </div>
+
+    <script>
+      let spans = document.querySelectorAll('.name');
+      console.log('spans :>> ', spans);
+      let names1 = Array.from(spans).map(item => item.textContent);
+      console.log('names1 :>> ', names1);
+      let names2 = Array.prototype.map.call(spans, item => item.textContent);
+      console.log('names2 :>> ', names2);
+      let names3 = Array.from(spans, s => s.textContent);
+      console.log('names3 :>> ', names3);
+    </script>
+  </body>
+</html>

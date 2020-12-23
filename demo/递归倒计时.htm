@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      h1 {
+        margin: 0;
+        background-color: #ccc;
+        text-align: center;
+        width: 200px;
+        color: blue;
+        font-size: 64px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="demo"></h1>
+    <script>
+      let count = 10; //data里面的变量
+      countRun(count);
+
+      function countRun(i) {
+        setTimeout(function fn() {
+          i -= 1;
+          count = i;
+          document.getElementById('demo').innerHTML = count;
+          console.log('count :>> ', count);
+          if (count === 0) {
+            console.log('return');
+            return;
+          }
+          setTimeout(fn, 1000);
+        }, 1000);
+      }
+    </script>
+  </body>
+</html>

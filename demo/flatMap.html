@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      const arr = [1, 2];
+      const res = arr.flatMap(function (item, index, arr1) {
+        console.log('item :>> ', item);
+        console.log('index :>> ', index);
+        console.log('arr1 :>> ', arr1);
+        console.log('this :>> ', this);
+        console.log('----------');
+        return [item, item * 10];
+      }, arr);
+      console.log('arr :>> ', arr);
+      console.log('res :>> ', res);
+      console.log('--------------------------------');
+    </script>
+  </body>
+</html>

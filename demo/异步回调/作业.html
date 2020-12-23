@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>demo</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      .message-ball {
+        font-size: 40px;
+        line-height: 300px;
+        text-align: center;
+      }
+      .circle {
+        transition-property: width, height, margin-left, margin-top;
+        transition-duration: 2s;
+        position: fixed;
+        transform: translateX(-50%) translateY(-50%);
+        background-color: red;
+        border-radius: 50%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <button onclick="go()">Click me</button>
+    <div id="demo"></div>
+
+    <script>
+      function go() {
+        console.log('go');
+
+        // let el = document.getElementById('demo');
+        // let childs = el.childNodes;
+
+        // for (let i = childs.length - 1; i >= 0; i--) {
+        //   el.removeChild(childs[i]);
+        // }
+
+        showCircle(200, 200, 100, div => {
+          div.classList.add('message-ball');
+          div.append('Hello, world!');
+        });
+      }
+
+      function showCircle(cx, cy, radius, callback) {
+        let div = document.createElement('div');
+        div.style.width = 0;
+        div.style.height = 0;
+        div.style.position = 'fixed';
+        div.style.left = cx + 'px';
+        div.style.top = cy + 'px';
+        div.className = 'circle';
+        document.getElementById('demo').append(div);
+
+        setTimeout(() => {
+          div.style.width = radius * 3 + 'px';
+          div.style.height = radius * 3 + 'px';
+
+          div.addEventListener('transitionend', function handler() {
+            div.removeEventListener('transitionend', handler);
+            callback(div);
+          });
+        }, 0);
+      }
+    </script>
+  </body>
+</html>
