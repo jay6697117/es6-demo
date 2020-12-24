@@ -2,7 +2,7 @@
 /*
 let promise = new Promise(function (resolve, reject) {
   resolve(1);
-  resolve之后不会执行任何代码
+  // resolve之后不会执行任何resolve/reject
   setTimeout(() => resolve(2), 1000);
 });
 promise.then(res => console.log(res)); //1
