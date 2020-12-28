@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // const p1 = new Promise(resolve => {
+      //   setTimeout(() => resolve(1), 1000);
+      // });
+
+      // const p2 = p1.then(res => {
+      //   console.log('res 001:>> ', res); //1
+      //   return res * 2;
+      // });
+
+      // const p3 = p2.then(res => {
+      //   console.log('res 002:>> ', res); //2
+      //   return res * 2;
+      // });
+
+      // p3.then(res => {
+      //   console.log('res 003:>> ', res); //4
+      //   return res * 2;
+      // });
+
+      // console.log('p1 :>> ', p1);
+      // console.log('p2 :>> ', p2);
+      // console.log('p3 :>> ', p3);
+
+      // console.log('----------------------------------------');
+
+      // new Promise((resolve, reject) => {
+      //   //st模拟异步操作
+      //   setTimeout(() => {
+      //     resolve(2);
+      //   }, 2000);
+      // })
+      //   .then(res => {
+      //     console.log('res 001:>> ', res);
+      //     return new Promise((resolve, reject) => {
+      //       //st模拟异步操作
+      //       setTimeout(function () {
+      //         resolve(res * res);
+      //       }, 2000);
+      //     });
+      //   })
+      //   .then(res => {
+      //     console.log('res 002:>> ', res);
+
+      //     return new Promise((resolve, reject) => {
+      //       //st模拟异步操作
+      //       setTimeout(function () {
+      //         resolve(res * res);
+      //       }, 2000);
+      //     });
+      //   })
+      //   .then(res => {
+      //     console.log('res 003:>> ', res);
+      //   });
+
+      console.log('----------------------------------------');
+
+      loadScript('./one.js')
+        .finally(() => console.log('Promise ready'))
+        .then(res => loadScript('./two.js'))
+        .then(res => loadScript('./three.js'))
+        .then(res => {
+          // 脚本加载完成，我们可以在这儿使用脚本中声明的函数
+          one();
+          two();
+          three();
+        })
+        .catch(err => {
+          console.log('err :>> ', err);
+        });
+
+      function loadScript(sciptPath) {
+        return new Promise((resolve, reject) => {
+          let scriptDom = document.createElement('script');
+          scriptDom.src = sciptPath;
+          scriptDom.onload = () => resolve(scriptDom); //onload是异步
+          scriptDom.onerror = () => reject(scriptDom); //onerror是异步
+          document.head.append(scriptDom);
+        });
+      }
+    </script>
+  </body>
+</html>

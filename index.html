@@ -7,28 +7,22 @@
   </head>
   <body>
     <script>
-      const p1 = new Promise(resolve => {
-        setTimeout(() => resolve(1), 1000);
-      });
+      class Thenable {
+        constructor(num) {
+          this.num = num;
+        }
+        then(resolve, reject) {
+          alert(resolve); // function() { native code }
+          // 1 秒后使用 this.num*2 进行 resolve
+          setTimeout(() => resolve(this.num * 2), 1000); // (**)
+        }
+      }
 
-      const p2 = p1.then(res => {
-        console.log('res 001:>> ', res); //1
-        return res * 2;
-      });
-
-      const p3 = p2.then(res => {
-        console.log('res 002:>> ', res); //2
-        return res * 2;
-      });
-
-      p3.then(res => {
-        console.log('res 003:>> ', res); //4
-        return res * 2;
-      });
-
-      console.log('p1 :>> ', p1);
-      console.log('p2 :>> ', p2);
-      console.log('p3 :>> ', p3);
+      new Promise(resolve => resolve(1))
+        .then(result => {
+          return new Thenable(result); // (*)
+        })
+        .then(alert); // 1000ms 后显示 2
     </script>
   </body>
 </html>
