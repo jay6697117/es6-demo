@@ -4,25 +4,53 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background-color: skyblue;
+      }
+      .img-style {
+        display: block;
+        width: 200px;
+        height: 200px;
+        margin: 20px auto;
+      }
+    </style>
   </head>
   <body>
     <script>
-      class Thenable {
-        constructor(num) {
-          this.num = num;
-        }
-        then(resolve, reject) {
-          alert(resolve); // function() { native code }
-          // 1 秒后使用 this.num*2 进行 resolve
-          setTimeout(() => resolve(this.num * 2), 1000); // (**)
-        }
-      }
-
-      new Promise(resolve => resolve(1))
-        .then(result => {
-          return new Thenable(result); // (*)
+      fetch('http://127.0.0.1:5500/user.json')
+        .finally(() => {
+          console.log('Promise ready...');
         })
-        .then(alert); // 1000ms 后显示 2
+        .then(response => {
+          console.log('response :>> ', response);
+          return response.json();
+        })
+        .then(result => {
+          console.log('result :>> ', result);
+          return fetch('https://gitee.com/api/v5/users/' + result.name);
+        })
+        .then(giteeUserInfo => {
+          console.log('giteeUserInfo :>> ', giteeUserInfo);
+          return giteeUserInfo.json();
+        })
+        .then(userInfoRes => {
+          console.log('userInfoRes :>> ', userInfoRes);
+          let img = document.createElement('img');
+          img.src = userInfoRes.avatar_url;
+          img.className = 'img-style';
+          document.body.append(img);
+          setTimeout(() => {
+            img.remove();
+          }, 3000);
+        })
+        .catch(err => {
+          console.log('err :>> ', err);
+        });
     </script>
   </body>
 </html>

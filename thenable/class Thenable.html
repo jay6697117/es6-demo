@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      class Thenable {
+        constructor(num) {
+          this.num = num;
+        }
+        then(resolve, reject) {
+          alert(resolve); // function() { native code }
+          alert('---------------');
+          alert(reject); // function() { native code }
+          // 1 秒后使用 this.num*2 进行 resolve
+          setTimeout(() => resolve(this.num * 10), 2000); // (**)
+        }
+      }
+
+      new Promise(resolve => resolve(1))
+        .then(result => {
+          return new Thenable(result); // (*)
+        })
+        .then(res => alert(res)); // 2000ms 后显示 2
+    </script>
+  </body>
+</html>
