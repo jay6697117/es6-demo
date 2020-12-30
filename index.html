@@ -10,13 +10,19 @@
         padding: 0;
       }
       body {
-        background-color: skyblue;
+        background-color: #eee;
       }
       .img-style {
         display: block;
-        width: 200px;
-        height: 200px;
+        width: 400px;
+        height: 300px;
         margin: 20px auto;
+      }
+
+      .div-style {
+        text-align: center;
+        color: red;
+        padding: 20px 0;
       }
     </style>
   </head>
@@ -30,9 +36,9 @@
           console.log('response :>> ', response);
           return response.json();
         })
-        .then(result => {
-          console.log('result :>> ', result);
-          return fetch('https://gitee.com/api/v5/users/' + result.name);
+        .then(res => {
+          console.log('res :>> ', res);
+          return fetch('http://127.0.0.1:5500/' + res.name);
         })
         .then(giteeUserInfo => {
           console.log('giteeUserInfo :>> ', giteeUserInfo);
@@ -40,13 +46,36 @@
         })
         .then(userInfoRes => {
           console.log('userInfoRes :>> ', userInfoRes);
-          let img = document.createElement('img');
-          img.src = userInfoRes.avatar_url;
-          img.className = 'img-style';
-          document.body.append(img);
-          setTimeout(() => {
-            img.remove();
-          }, 3000);
+          return new Promise((resolve, reject) => {
+            const img = document.createElement('img');
+            img.src = userInfoRes.url;
+            img.className = 'img-style';
+            document.body.append(img);
+
+            //setTimeout模拟异步
+            setTimeout(() => {
+              img.remove();
+              for (const key in userInfoRes) {
+                if (userInfoRes.hasOwnProperty.call(userInfoRes, key)) {
+                  if (key === 'url') {
+                    delete userInfoRes[key];
+                  }
+                }
+              }
+              return resolve(userInfoRes);
+            }, 3000);
+          });
+        })
+        .then(finalRes => {
+          console.log('finalRes :>> ', finalRes);
+          const colors = ['yellow', 'green', 'blue'];
+          Object.keys(finalRes).forEach((item, index) => {
+            const div = document.createElement('h1');
+            div.innerText = finalRes[item];
+            div.className = 'div-style';
+            div.style.background = colors[index];
+            document.body.append(div);
+          });
         })
         .catch(err => {
           console.log('err :>> ', err);
