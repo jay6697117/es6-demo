@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background-color: #eee;
+      }
+      .img-style {
+        display: block;
+        width: 400px;
+        height: 300px;
+        margin: 20px auto;
+      }
+
+      .div-style {
+        text-align: center;
+        color: red;
+        padding: 20px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      fetch('http://127.0.0.1:5500/user.json')
+        .finally(() => {
+          alert('Promise ready...请等待两秒');
+
+          return new Promise((resolve, reject) => {
+            //setTimeout模拟异步
+            setTimeout(() => {
+              return resolve();
+            }, 2000);
+          });
+        })
+        .then(response => {
+          console.log('response :>> ', response);
+          return response.json();
+        })
+        .then(res => {
+          console.log('res :>> ', res);
+          return fetch('http://127.0.0.1:5500/' + res.name);
+        })
+        .then(giteeUserInfo => {
+          console.log('giteeUserInfo :>> ', giteeUserInfo);
+          return giteeUserInfo.json();
+        })
+        .then(userInfoRes => {
+          console.log('userInfoRes :>> ', userInfoRes);
+          const img = document.createElement('img');
+          img.src = userInfoRes.url;
+          img.className = 'img-style';
+          document.body.append(img);
+          alert('两秒后删除图片...');
+
+          return new Promise((resolve, reject) => {
+            //setTimeout模拟异步
+            setTimeout(() => {
+              img.remove();
+              for (const key in userInfoRes) {
+                if (userInfoRes.hasOwnProperty.call(userInfoRes, key)) {
+                  if (key === 'url') {
+                    delete userInfoRes[key];
+                  }
+                }
+              }
+              return resolve(userInfoRes);
+            }, 2000);
+          });
+        })
+        .then(finalRes => {
+          console.log('finalRes :>> ', finalRes);
+          const colors = ['yellow', 'green', 'blue'];
+          Object.keys(finalRes).forEach((item, index) => {
+            const div = document.createElement('h1');
+            div.innerText = finalRes[item];
+            div.className = 'div-style';
+            div.style.background = colors[index];
+            document.body.append(div);
+          });
+        })
+        .catch(err => {
+          console.log('err :>> ', err);
+        });
+    </script>
+  </body>
+</html>
