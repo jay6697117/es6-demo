@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      fetch('http://127.0.0.1:5500/promise-error/user.json')
+        .finally(() => {
+          console.log('Promise ready 请等待两秒--------------');//测试
+          return new Promise((resolve, reject) => {
+            //setTimeout模拟异步
+            setTimeout(() => {
+              return resolve();
+              // return reject('finally lalala')
+            }, 2000);
+          });
+        })
+        .then(response1 => {
+          console.log('response1 :>> ', response1);//测试
+          return new Promise((resolve, reject) => {
+            return resolve(response1.json());
+            // return reject('response1 lalala')
+          });
+        })
+        .then(user => {
+          console.log('user :>> ', user);//测试
+          return new Promise((resolve, reject) => {
+            return resolve(fetch(`https://api.github.com/users/${user.name}`));
+            // return reject('user lalala')
+          });
+        })
+        .then(response2 => {
+          console.log('response2 :>> ', response2);//测试
+          return new Promise((resolve, reject) => {
+            return resolve(response2.json());
+            // return reject('response2 lalala')
+          });
+        })
+        .then(res => {
+          console.log('最终res :>> ', res);//测试
+        })
+        .catch(err => {
+          console.log('err :>> ', err);//测试
+        });
+    </script>
+  </body>
+</html>
