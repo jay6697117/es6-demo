@@ -26,7 +26,6 @@
       //   }); // error :>>  SyntaxError: Unexpected token < in JSON at position 0
 
       console.log('-------------------------------------');
-
       class HttpError extends Error {
         constructor(response) {
           super(`${response.status} for ${response.url}`);
@@ -34,7 +33,6 @@
           this.response = response;
         }
       }
-
       function loadJson(url) {
         return fetch(url).then(response => {
           if (response.status == 200) {
@@ -44,7 +42,6 @@
           }
         });
       }
-
       function demoGithubUser() {
         let name = prompt('Enter a name?', 'iliakan');
         return loadJson(`https://api.github.com/users/${name}`)
@@ -62,7 +59,6 @@
             }
           });
       }
-
       demoGithubUser();
     </script>
   </body>
