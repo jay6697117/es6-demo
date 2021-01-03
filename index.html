@@ -43,7 +43,7 @@
         });
       }
       function demoGithubUser() {
-        const name = prompt('Enter a name?', 'your name');
+        const name = prompt('Enter a name?', 'jay6697117');
         return loadJson(`https://api.github.com/users/${name}`)
           .then(user => {
             console.log('user :>> ', user);
@@ -60,8 +60,17 @@
             }
           });
       }
-      const result = demoGithubUser();
-      console.log('result 666:>> ', result);
+
+      demoGithubUser().then(res => {
+        console.log('res :>> ', res);
+        const img = document.createElement('img');
+        img.src = res.avatar_url;
+        img.style.display = 'block';
+        img.style.margin = '0 auto';
+        img.style.width = '300px';
+        img.style.height = '300px';
+        document.body.append(img);
+      });
     </script>
   </body>
 </html>
