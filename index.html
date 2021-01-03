@@ -43,23 +43,25 @@
         });
       }
       function demoGithubUser() {
-        let name = prompt('Enter a name?', 'iliakan');
+        const name = prompt('Enter a name?', 'your name');
         return loadJson(`https://api.github.com/users/${name}`)
           .then(user => {
             console.log('user :>> ', user);
-            console.log(`Full name: ${user.name}.`);
+            console.log(`Full name: ${user.name}`);
             return user;
           })
           .catch(error => {
+            console.log('error :>> ', error);
             if (error instanceof HttpError && err.response.status === 404) {
-              console.log('No such user, please reenter...');
+              console.log('No such user, please reenter......');
               return demoGithubUser();
             } else {
               throw error;
             }
           });
       }
-      demoGithubUser();
+      const result = demoGithubUser();
+      console.log('result 666:>> ', result);
     </script>
   </body>
 </html>
