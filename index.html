@@ -7,6 +7,7 @@
   </head>
   <body>
     <script>
+      // console.log('-------------------------------------');
       // fetch('http://127.0.0.1:5500/user666.json') // (*)
       //   .then(response => {
       //     return response.json();
@@ -24,7 +25,7 @@
       //     return console.log('error :>> ', error);
       //   }); // error :>>  SyntaxError: Unexpected token < in JSON at position 0
 
-      console.log('-------------------------------------------------------------------');
+      console.log('-------------------------------------');
 
       class HttpError extends Error {
         constructor(response) {
@@ -44,9 +45,25 @@
         });
       }
 
-      loadJson('http://127.0.0.1:5500/user.json') // (3)
-        .then(result => console.log('result :>> ', result))
-        .catch(error => console.log('error :>> ', error)); // HttpError: 404 for .../user66.json
+      function demoGithubUser() {
+        let name = prompt('Enter a name?', 'iliakan');
+        return loadJson(`https://api.github.com/users/${name}`)
+          .then(user => {
+            console.log('user :>> ', user);
+            console.log(`Full name: ${user.name}.`);
+            return user;
+          })
+          .catch(error => {
+            if (error instanceof HttpError && err.response.status === 404) {
+              console.log('No such user, please reenter...');
+              return demoGithubUser();
+            } else {
+              throw error;
+            }
+          });
+      }
+
+      demoGithubUser();
     </script>
   </body>
 </html>
