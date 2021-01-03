@@ -7,7 +7,46 @@
   </head>
   <body>
     <script>
+      // fetch('http://127.0.0.1:5500/user666.json') // (*)
+      //   .then(response => {
+      //     return response.json();
+      //   })
+      //   .then(user => {
+      //     return fetch(`https://api.github.com/users/${user.name}`);
+      //   }) // (**)
+      //   .then(response => {
+      //     return response.json();
+      //   })
+      //   .then(result => {
+      //     return console.log('result :>> ', result);
+      //   })
+      //   .catch(error => {
+      //     return console.log('error :>> ', error);
+      //   }); // error :>>  SyntaxError: Unexpected token < in JSON at position 0
 
+      console.log('-------------------------------------------------------------------');
+
+      class HttpError extends Error {
+        constructor(response) {
+          super(`${response.status} for ${response.url}`);
+          this.name = 'HttpError';
+          this.response = response;
+        }
+      }
+
+      function loadJson(url) {
+        return fetch(url).then(response => {
+          if (response.status == 200) {
+            return response.json();
+          } else {
+            throw new HttpError(response);
+          }
+        });
+      }
+
+      loadJson('http://127.0.0.1:5500/user66.json') // (3)
+        .then(result => console.log('result :>> ', result))
+        .catch(error => console.log('error :>> ', error)); // HttpError: 404 for .../user66.json
     </script>
   </body>
 </html>
