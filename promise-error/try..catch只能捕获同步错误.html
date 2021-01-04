@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      new Promise((resolve, reject) => {
+        // 1.0
+        // throw new Error('what the fuck 000!');
+
+        // 2.0:只有这个情况不会catch到error
+        // setTimeout(() => {
+        //   throw new Error('what the fuck!');
+        // }, 1000);
+
+        // 3.0
+        // return reject(new Error('what the fuck 000!'));
+
+        // 4.0
+        setTimeout(() => {
+          return reject(new Error('what the fuck 001!'));
+        }, 1000);
+      })
+        .finally(() => alert('Promise ready...'))
+        .catch(err => alert(err));
+
+        // 总结：任务中隐式的 try..catch 结构只能「捕抓」到同步的错误，因为 try..catch 包裹了计划要执行的函数时，该函数本身要稍后才执行，这时引擎已经离开了 try..catch 结构。
+    </script>
+  </body>
+</html>

@@ -1,76 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body>
-    <script>
-      // console.log('-------------------------------------');
-      // fetch('http://127.0.0.1:5500/user666.json') // (*)
-      //   .then(response => {
-      //     return response.json();
-      //   })
-      //   .then(user => {
-      //     return fetch(`https://api.github.com/users/${user.name}`);
-      //   }) // (**)
-      //   .then(response => {
-      //     return response.json();
-      //   })
-      //   .then(result => {
-      //     return console.log('result :>> ', result);
-      //   })
-      //   .catch(error => {
-      //     return console.log('error :>> ', error);
-      //   }); // error :>>  SyntaxError: Unexpected token < in JSON at position 0
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
 
-      console.log('-------------------------------------');
-      class HttpError extends Error {
-        constructor(response) {
-          super(`${response.status} for ${response.url}`);
-          this.name = 'HttpError';
-          this.response = response;
-        }
-      }
-      function loadJson(url) {
-        return fetch(url).then(response => {
-          if (response.status == 200) {
-            return response.json();
-          } else {
-            throw new HttpError(response);
-          }
-        });
-      }
-      function demoGithubUser() {
-        const name = prompt('Enter a name?', 'jay6697117');
-        return loadJson(`https://api.github.com/users/${name}`)
-          .then(user => {
-            console.log('user :>> ', user);
-            console.log(`Full name: ${user.name}`);
-            return user;
-          })
-          .catch(error => {
-            console.log('error :>> ', error);
-            if (error instanceof HttpError && err.response.status === 404) {
-              console.log('No such user, please reenter......');
-              return demoGithubUser();
-            } else {
-              throw error;
-            }
-          });
-      }
-
-      demoGithubUser().then(res => {
-        console.log('res :>> ', res);
-        const img = document.createElement('img');
-        img.src = res.avatar_url;
-        img.style.display = 'block';
-        img.style.margin = '0 auto';
-        img.style.width = '300px';
-        img.style.height = '300px';
-        document.body.append(img);
-      });
-    </script>
-  </body>
+  </script>
+</body>
 </html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>demo</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      h1 {
+        padding: 10px;
+      }
+      .img-style {
+        width: 300px;
+        height: 300px;
+        display: block;
+        margin: 0 auto;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1 id="demo">hello world</h1>
+    <hr />
+    <script>
+      // console.log('-------------------------------------');
+      // fetch('http://127.0.0.1:5500/user666.json') // (*)
+      //   .then(response => {
+      //     return response.json();
+      //   })
+      //   .then(user => {
+      //     return fetch(`https://api.github.com/users/${user.name}`);
+      //   }) // (**)
+      //   .then(response => {
+      //     return response.json();
+      //   })
+      //   .then(result => {
+      //     return console.log('result :>> ', result);
+      //   })
+      //   .catch(error => {
+      //     return console.log('error :>> ', error);
+      //   }); // error :>>  SyntaxError: Unexpected token < in JSON at position 0
+
+      console.log('-------------------------------------');
+      class HttpError extends Error {
+        constructor(response) {
+          super(`${response.status} for ${response.url}`);
+          this.name = 'HttpError';
+          this.response = response;
+        }
+      }
+      function loadJson(url) {
+        return fetch(url).then(response => {
+          if (response.status == 200) {
+            return response.json();
+          } else {
+            throw new HttpError(response);
+          }
+        });
+      }
+      function demoGithubUser() {
+        const name = prompt('Enter a name?', 'jay6697117');
+
+        return loadJson(`https://api.github.com/users/${name}`)
+          .finally(() => {
+            document.getElementById('demo').style.color = 'red'; // (1) 开始指示（indication）
+            document.getElementById('demo').style.background = '#ccc'; // (1) 开始指示（indication）
+            return new Promise((resolve, reject) => {
+              //setTimeout模拟异步延迟
+              setTimeout(() => {
+                return resolve();
+              }, 0);
+            });
+          })
+          .then(user => {
+            //成功
+            console.log('user :>> ', user);
+            console.log(`Full name: ${user.name}`);
+            return user;
+          })
+          .catch(error => {
+            //失败
+            console.log('error :>> ', error);
+            if (error instanceof HttpError && error.response.status === 404) {
+              alert('没有该用户, 请重新输入!');
+              return demoGithubUser();
+            } else {
+              throw error;
+            }
+          });
+      }
+
+      demoGithubUser().then(res => {
+        console.log('res :>> ', res);
+        const img = document.createElement('img');
+        img.src = res.avatar_url;
+        img.className = 'img-style';
+        document.body.append(img);
+      });
+    </script>
+  </body>
+</html>
