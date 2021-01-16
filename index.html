@@ -1,83 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Promise.allSettled</title>
-  </head>
-  <body>
-    <script>
-      // 1.0 Promise.allSettled
-      // const urls = ['https://api.github.com/users/iliakan', 'https://api.github.com/users/remy', 'https://not-such-url'];
-      // const promiseArr = urls.map(item => {
-      //   return fetch(item);
-      // });
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+<script>
 
-      // console.log('promiseArr :>> ', promiseArr);
-
-      // Promise.allSettled(promiseArr).then(results => {
-      //   console.log('results :>> ', results);
-      //   results.forEach(item => {
-      //     if (item.status === 'fulfilled') {
-      //       console.log('item.value :>> ', item.value);
-      //     }
-
-      //     if (item.status === 'rejected') {
-      //       console.log('item.reason :>> ', item.reason);
-      //     }
-      //   });
-      // });
-
-      // 2.0 Promise.race
-      // Promise.race([
-      //   new Promise((resolve, reject) => setTimeout(() => resolve(1), 2000)),
-      //   new Promise((resolve, reject) => setTimeout(() => reject(new Error('what the fuck!!!')), 3000)),
-      //   new Promise((resolve, reject) => setTimeout(() => resolve(3), 1000))
-      // ]).then(res => console.log('res :>> ', res)); // 1
-
-      // 3.0 Promise.resolve/reject
-      const p1 = new Promise(resolve => {
-        return resolve(1); // 1
-      });
-      const p2 = new Promise(resolve => {
-        return resolve(Promise.resolve(2)); //Promise.resolve(2)
-      });
-      const p3 = Promise.resolve(3); //3
-
-      console.log('同步 p1 :>> ', p1);
-      console.log('同步 p2 :>> ', p2);
-      console.log('同步 p3 :>> ', p3);
-
-      console.log('------------------------------------------');
-
-      console.log('同步 001 :>> ', 001);
-      p1.then(result1 => console.log('异步 result1 :>> ', result1));//一轮异步
-      console.log('同步 002 :>> ', 002);
-      p2.then(result2 => console.log('异步 result2 :>> ', result2)); //最后执行(二轮异步)
-      console.log('同步 003 :>> ', 003);
-      p3.then(result3 => console.log('异步 result3 :>> ', result3));//一轮异步
-      console.log('同步 004 :>> ', 004);
-
-      console.log('------------------------------------------');
-
-      // const url = 'https://api.github.com/users/jay6697117';
-      // const cache = new Map();
-
-      // function loadCached(url) {
-      //   // return Promise.resolve('loadCached success');
-      //   return Promise.reject(new Error('loadCached failure'));
-
-      //   return fetch(url)
-      //     .then(response => response.json())
-      //     .then(result => {
-      //       cache.set(url, result);
-      //       return result;
-      //     });
-      // }
-      // console.log('loadCached(url) :>> ', loadCached(url));
-      // loadCached(url)
-      //   .then(res => console.log('res :>> ', res))
-      //   .catch(err => console.log('err :>> ', err));
-    </script>
-  </body>
+</script>
+</body>
 </html>
