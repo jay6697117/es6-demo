@@ -1,13 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
-<script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
 
-</script>
-</body>
+  <body>
+    <script>
+      const promise1 = loadScriptPromise('./script.js');
+      console.log('promise1 :>> ', promise1);
+      promise1.then(res => console.log('res :>> ', res)).catch(err => console.log('err :>> ', err));
+
+      function loadScriptPromise(src) {
+        return new Promise((resolve, reject) => {
+          loadScript(src, (error, script) => {
+            if (error) {
+              console.log('error script :>> ', script);
+              return reject(error);
+            } else {
+              return resolve(script);
+            }
+          });
+        });
+      }
+
+      function loadScript(sciptPath, callback) {
+        let scriptDom = document.createElement('script');
+        scriptDom.src = sciptPath;
+
+        scriptDom.onload = () => {
+          callback(null, scriptDom);
+        };
+
+        scriptDom.onerror = () => {
+          callback(new Error('# sciptPath: ' + sciptPath + ' #'), scriptDom);
+        };
+
+        document.head.append(scriptDom);
+      }
+    </script>
+  </body>
 </html>
