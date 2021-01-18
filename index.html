@@ -9,66 +9,80 @@
   <body>
     <script>
       //1.0  promisify 一层封装
-      const promise = loadScriptPromise('./script.js');
-      console.log('promise :>> ', promise);
-      console.log('-------------------------------------------------');
-
-      promise.then(res => console.log('res :>> ', res)).catch(err => console.log('err :>> ', err));
-      function loadScriptPromise(src) {
-        return new Promise((resolve, reject) => {
-          loadScript(src, (error, script) => {
-            if (error) {
-              console.log('error script :>> ', script);
-              return reject(error);
-            } else {
-              return resolve(script);
-            }
-          });
-        });
-      }
+      // const promise = loadScriptPromise('./script.js');
+      // console.log('promise :>> ', promise);
+      // console.log('-------------------------001------------------------');
+      // promise.then(res => console.log('res :>> ', res)).catch(err => console.log('err :>> ', err));
+      // function loadScriptPromise(src) {
+      //   return new Promise((resolve, reject) => {
+      //     loadScript(src, (error, script) => {
+      //       if (error) {
+      //         console.log('error script :>> ', script);
+      //         return reject(error);
+      //       } else {
+      //         return resolve(script);
+      //       }
+      //     });
+      //   });
+      // }
 
       //2.0  promisify 辅助函数 可以适用所有函数
-      const promisifyFn = promisify(loadScript);
-      console.log('promisifyFn :>> ', promisifyFn);
+      const promisifyFn = promisify(loadScript, false);
+      // const promisifyFn = promisify(loadScript, true);
+      console.log('001: promisifyFn :>> ', promisifyFn);
 
-      console.log('-------------------------------------------------');
-      promisifyFn('./script.js')
-        .then(res => console.log('res :>> ', res))
-        .catch(err => console.log('err :>> ', err));
+      console.log('-------------------------002------------------------');
+      promisifyFn('./script.js', 'text/javascript', '我是卖报的小行家')
+        .then(res => console.log('002 then: res :>> ', res))
+        .catch(err => console.log('002 catch: err :>> ', err))
+        .finally(() => {
+          console.log('003: Promise finally done');
+        });
 
-      function promisify(paramFn) {
-        const promiseFn = function (src) {
+      function promisify(paramFn, isManyArgs = false) {
+        const promisifyFn = (...args) => {
           const promise = new Promise((resolve, reject) => {
-            const callback = function (error, script) {
+            const callback = (error, ...argDoms) => {
               if (error) {
-                console.log('error script :>> ', script);
                 return reject(error);
               } else {
-                return resolve(script);
+                return resolve(isManyArgs ? argDoms : argDoms[0]);
               }
             };
-            // srcs
-            paramFn(src, callback);
+            args.push(callback);
+            // args
+            paramFn.call(null, ...args);
           });
           return promise;
         };
-        return promiseFn;
+        return promisifyFn;
       }
 
       // function loadScript 就是 paramFn
-      function loadScript(src, callback) {
-        let scriptDom = document.createElement('script');
+      function loadScript(src, type, desc, callback) {
+        //dom1
+        const scriptDom = document.createElement('script');
         scriptDom.src = src;
+        scriptDom.type = type;
+        scriptDom.setAttribute('desc', desc);
+        //dom2
+        const imgDom = document.createElement('img');
+        imgDom.src = 'https://pic4.zhimg.com/v2-2ba2a80b2a36ca07501c4c1f7592a164_1440w.jpg?source=172ae18b';
+        imgDom.width = '375';
+        imgDom.height = '200';
 
+        //成功回调
         scriptDom.onload = () => {
-          callback(null, scriptDom);
+          callback(null, scriptDom, imgDom);
         };
 
+        //失败回调
         scriptDom.onerror = () => {
-          callback(new Error('# error src: ' + src + ' #'), scriptDom);
+          callback(new Error('# error src: ' + src + ' #'), scriptDom, imgDom);
         };
 
-        document.head.append(scriptDom);
+        document.body.append(scriptDom);
+        document.body.append(imgDom);
       }
     </script>
   </body>
