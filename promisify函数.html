@@ -3,13 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1" />
+    <title>promisify函数</title>
   </head>
 
   <body>
     <script>
       //1.0  promisify 一层封装
-      // const promise = loadScriptPromise('./script.js');
+      // const url = 'https://cdn.bootcdn.net/ajax/libs/lodash.js/0.1.0/lodash.js';
+      // const promise = loadScriptPromise(url);
       // console.log('promise :>> ', promise);
       // console.log('-------------------------001------------------------');
       // promise.then(res => console.log('res :>> ', res)).catch(err => console.log('err :>> ', err));
@@ -27,12 +29,13 @@
       // }
 
       //2.0  promisify 辅助函数 可以适用所有函数
+      const url = 'https://cdn.bootcdn.net/ajax/libs/lodash.js/0.1.0/lodash.js';
       const promisifyFn = promisify(loadScript, false);
       // const promisifyFn = promisify(loadScript, true);
       console.log('001: promisifyFn :>> ', promisifyFn);
 
       console.log('-------------------------002------------------------');
-      promisifyFn('./script.js', 'text/javascript', '我是卖报的小行家')
+      promisifyFn(url, 'text/javascript', '我是卖报的小行家')
         .then(res => console.log('002 then: res :>> ', res))
         .catch(err => console.log('002 catch: err :>> ', err))
         .finally(() => {
