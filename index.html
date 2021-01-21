@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 1.0
+      // const p = Promise.resolve('lalala 001');
+      // p.then(res => {
+      //   console.log('res :>> ', res);
+      // }).catch(err => {
+      //   console.log('err :>> ', err);
+      // }).finally(()=>{
+      //   console.log('Promise finally...');
+      // });
+      // console.log('lalala 002');
+
+      // 2.0
+      // let promise = Promise.resolve();
+      // promise.then(() => alert('promise done!'));
+      // alert('code finished'); // 这个 alert 先显示
+
+      // 3.0
+      // 如果一个 promise 的 error 未被在微任务队列的末尾进行处理，则会出现“未处理的 rejection”。
+      let promise = Promise.reject(new Error('what the fuck!!!'));
+
+      // promise.catch(error => {
+      //   console.log('catch error :>> ', error);
+      // });
+
+      setTimeout(() => {
+        promise.catch(error => {
+          console.log('catch error *** :>> ', error);
+        });
+      }, 0);
+
+      //忘记加catch情况下执行下面的事件监听
+      window.addEventListener('unhandledrejection', event => {
+        console.log('event.reason ### :>> ', event.reason);
+      });
+    </script>
+  </body>
+</html>
