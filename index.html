@@ -26,22 +26,45 @@
 
       // 3.0
       // 如果一个 promise 的 error 未被在微任务队列的末尾进行处理，则会出现“未处理的 rejection”。
-      let promise = Promise.reject(new Error('what the fuck!!!'));
+      // let promise = Promise.reject(new Error('what the fuck!!!'));
 
-      // promise.catch(error => {
-      //   console.log('catch error :>> ', error);
+      // // promise.catch(error => {
+      // //   console.log('catch error :>> ', error);
+      // // });
+
+      // setTimeout(() => {
+      //   promise.catch(error => {
+      //     console.log('catch error *** :>> ', error);
+      //   });
+      // }, 0);
+
+      // //忘记加catch情况下执行下面的事件监听
+      // window.addEventListener('unhandledrejection', event => {
+      //   console.log('event.reason ### :>> ', event.reason);
       // });
 
-      setTimeout(() => {
-        promise.catch(error => {
-          console.log('catch error *** :>> ', error);
+      //4.0 async/await
+      async function run(params) {
+        let promise1 = new Promise((resolve, reject) => {
+          setTimeout(() => {
+            console.log('000003 -- Promise');
+            return resolve('resolve');
+          }, 2000);
         });
-      }, 0);
+        let promise2 = new Promise((resolve, reject) => {
+          setTimeout(() => {
+            console.log('000001 -- Promise');
+            return reject(new Error('reject'));
+          }, 1000);
+        });
 
-      //忘记加catch情况下执行下面的事件监听
-      window.addEventListener('unhandledrejection', event => {
-        console.log('event.reason ### :>> ', event.reason);
-      });
+        await promise2.then(res2 => console.log(res2)).catch(err2 => console.log(err2));
+        console.log('000002');
+        await promise1.then(res1 => console.log(res1)).catch(err1 => console.log(err1));
+        console.log('000004');
+      }
+
+      run();
     </script>
   </body>
 </html>
