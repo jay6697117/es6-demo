@@ -44,27 +44,52 @@
       // });
 
       //4.0 async/await
-      async function run(params) {
-        let promise1 = new Promise((resolve, reject) => {
-          setTimeout(() => {
-            console.log('000003 -- Promise');
-            return resolve('resolve');
-          }, 2000);
-        });
-        let promise2 = new Promise((resolve, reject) => {
-          setTimeout(() => {
-            console.log('000001 -- Promise');
-            return reject(new Error('reject'));
-          }, 1000);
-        });
+      // async function run(params) {
+      //   let promise1 = new Promise((resolve, reject) => {
+      //     setTimeout(() => {
+      //       console.log('000003 -- Promise');
+      //       return resolve('resolve');
+      //     }, 2000);
+      //   });
+      //   let promise2 = new Promise((resolve, reject) => {
+      //     setTimeout(() => {
+      //       console.log('000001 -- Promise');
+      //       return reject(new Error('reject'));
+      //     }, 1000);
+      //   });
 
-        await promise2.then(res2 => console.log(res2)).catch(err2 => console.log(err2));
-        console.log('000002');
-        await promise1.then(res1 => console.log(res1)).catch(err1 => console.log(err1));
-        console.log('000004');
+      //   await promise2.then(res2 => console.log(res2)).catch(err2 => console.log(err2));
+      //   console.log('000002');
+      //   await promise1.then(res1 => console.log(res1)).catch(err1 => console.log(err1));
+      //   console.log('000004');
+      // }
+
+      //5.0
+
+      function checkImage(url) {
+        return new Promise((resolve, reject) => {
+          const img = document.createElement('img');
+          img.src = url;
+          img.onload = res => {
+            console.log('onload res :>> ', res);
+            resolve(res);
+          };
+          img.onerror = err => {
+            console.log('onerror err :>> ', err);
+            reject(err);
+          };
+        });
       }
 
-      run();
+      checkImage('https://wangdoc.com/es6/images/cover_thumbnail_3rd.jpg')
+        .then(res => {
+          alert('有效图片链接')
+          console.log('then res :>> ', res);
+        })
+        .catch(err => {
+          alert('无效图片链接')
+          console.log('catch err :>> ', err);
+        });
     </script>
   </body>
 </html>
