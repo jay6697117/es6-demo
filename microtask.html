@@ -64,8 +64,7 @@
       //   console.log('000004');
       // }
 
-      //5.0
-
+      //5.0 图片链接识别
       function checkImage(url) {
         return new Promise((resolve, reject) => {
           const img = document.createElement('img');
@@ -83,11 +82,16 @@
 
       checkImage('https://wangdoc.com/es6/images/cover_thumbnail_3rd.jpg')
         .then(res => {
-          alert('有效图片链接')
+          alert('有效图片链接');
           console.log('then res :>> ', res);
+          console.log('res.path :>> ', res.path);
+          res.path.forEach(element => {
+            console.log('element :>> ', element);
+            document.body.append(element);
+          });
         })
         .catch(err => {
-          alert('无效图片链接')
+          alert('无效图片链接');
           console.log('catch err :>> ', err);
         });
     </script>
