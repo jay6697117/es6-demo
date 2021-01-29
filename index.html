@@ -151,20 +151,48 @@
 
       // --------------------------------------------------------
       //5.0 Class 中的 async 方法
-      class waiter {
-        constructor(param) {
-          this.param = param;
-        }
-        async wait() {
-          return await Promise.resolve(this.param);
-        }
-      }
-      console.log(new waiter('hello'));
+      // class waiter {
+      //   constructor(param) {
+      //     this.param = param;
+      //   }
+      //   async waitMethod() {
+      //     return await Promise.resolve(this.param);
+      //   }
+      // }
+      // console.log(new waiter('hello 111').waitMethod());
 
-      async function waitFn(param) {
-        return { aaa: await Promise.resolve(param) };
+      // async function waitFn(param) {
+      //   return await Promise.resolve(param);
+      // }
+      // console.log(waitFn('hello 222'));
+
+      // // 总结: 这里的含义是一样的：它确保了方法的返回值是一个 promise 并且可以在方法中使用 await
+
+      // --------------------------------------------------------
+      //6.0 async/await Error 处理
+
+      // async function foo() {
+      //   try {
+      //     const response = await fetch('https://api.github.com/users/jay6697117');
+      //     console.log('请求响应 - response :>> ', response);
+      //     const user = await response.json();
+      //     console.log('成功结果 -- user :>> ', user);
+      //   } catch (error) {
+      //     console.log('异常 -- error :>> ', error);
+      //   }
+      // }
+      // foo();
+
+      async function foo() {
+        const response = await fetch('https://api.github.com/users/jay6697117');
+        return await response.json();
       }
-      console.log(waitFn('lalala'));
+
+      console.log('foo() :>> ', foo());
+
+      foo()
+        .then(res => console.log('res :>> ', res))
+        .catch(error => console.log('error :>> ', error));
     </script>
   </body>
 </html>
