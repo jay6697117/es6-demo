@@ -221,41 +221,51 @@
       // foo();
 
       // --------------------------------------------------------
-      //8.0
+      //8.0 async/await 来重写loadJson
+      // async function loadJson(url) {
+      //   const response = await fetch(url);
+      //   console.log('response :>> ', response);
 
-      async function loadJson(url) {
-        const response = await fetch(url);
-        console.log('response :>> ', response);
+      //   if (response.status === 200) {
+      //     // 1.0
+      //     const json = await new Promise(resolve => {
+      //       setTimeout(() => {
+      //         resolve(response.json());
+      //       }, 3000);
+      //     });
+      //     console.log('------------------------------------------------------');
+      //     console.log('json :>> ', json);
+      //     return json; //成功在这停止
 
-        if (response.status === 200) {
-          // 1.0
-          const json = await new Promise(resolve => {
-            setTimeout(() => {
-              resolve(response.json());
-            }, 3000);
-          });
-          console.log('------------------------------------------------------');
-          console.log('json :>> ', json);
-          return json; //成功在这停止
+      //     // // 2.0
+      //     // const json = await response.json();
+      //     // console.log('json :>> ', json);
+      //     // return json; //成功在这停止
 
-          // // 2.0
-          // const json = await response.json();
-          // console.log('json :>> ', json);
-          // return json; //成功在这停止
+      //     // // 3.0
+      //     // const json = Promise.resolve(response.json());
+      //     // console.log('json :>> ', json);
+      //     // return json; //成功在这停止
+      //   }
 
-          // // 3.0
-          // const json = Promise.resolve(response.json());
-          // console.log('json :>> ', json);
-          // return json; //成功在这停止
-        }
+      //   throw new Error(response.status); //失败走这
+      // }
 
-        throw new Error(response.status); //失败走这
-      }
+      // const promise1 = loadJson('https://api.github.com/users/jay6697117');
+      // console.log('promise1 :>> ', promise1);
 
-      const promise1 = loadJson('https://api.github.com/users/jay6697117');
-      console.log('promise1 :>> ', promise1);
+      // promise1
+      //   .then(res => {
+      //     console.log('res :>> ', res);
+      //   })
+      //   .catch(err => {
+      //     console.log('err :>> ', err);
+      //   });
 
-      promise1.then(res => console.log('res :>> ', res)).catch(err => console.log('err :>> ', err));
+      // --------------------------------------------------------
+      //9.0 async/await 重写 "rethrow"
+
+
     </script>
   </body>
 </html>
