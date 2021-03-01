@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Proxy和Reflect</title>
+  </head>
+  <body>
+    <script>
+      // target —— 是要包装的对象，可以是任何东西，包括函数。
+      // handler —— 代理配置：带有“捕捉器”（“traps”，即拦截操作的方法）的对象。比如 get 捕捉器用于读取 target 的属性，set 捕捉器用于写入 target 的属性，等等。
+      const target = {};
+      const proxy = new Proxy(target,{});
+      console.log('proxy :>> ', proxy);
+    </script>
+  </body>
+</html>
